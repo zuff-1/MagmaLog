@@ -10,7 +10,7 @@ def test_set_central_registry():
     set_central_registry(
         key,
         obj,
-        )
+    )
     )
 
 def test_get_central_registry():
@@ -19,5 +19,5 @@ def test_get_central_registry():
     CentralRegistryControls.
     get_central_registry(
         "key1"
-        )
+    )
     )

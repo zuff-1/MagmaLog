@@ -1,16 +1,15 @@
-import engine.goal_manager
+import engine.goal_manager as goal_manager
 
 
 name = "Code"
 goal_duration = 7200
 
 user_goal = (
-engine.
 goal_manager.
 UserGoal(
     name,
     goal_duration,
-    )
+)
 )
 
 def test_constructor():
