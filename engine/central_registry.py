@@ -14,17 +14,21 @@ class CentralRegistryControls():
             central_registry[key] = obj
             return
         
-        reference = central_registry
+        ref = central_registry
         for i in key[:-1]:
-            reference = reference[i]
-        reference[key[-1]] = obj
-
-
+            ref = ref[i]
+        ref[key[-1]] = obj
 
 
     def get_central_registry(key):
-        return central_registry.get(key)
+        ref = central_registry
 
+        if isinstance(key, str):
+            return ref[key]
+        
+        for i in key:
+            ref = ref[i]
+        return ref
 
 if __name__ == "__main__":
     pass

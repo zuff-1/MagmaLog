@@ -3,7 +3,7 @@ import engine.central_registry as central_registry
 
 def test_set_central_registry():
     key = "key1"
-    obj = "object1"
+    obj = {"key2": "test item"}
     (
     central_registry.
     CentralRegistryControls.
@@ -12,12 +12,15 @@ def test_set_central_registry():
         obj,
     )
     )
+    assert central_registry.central_registry[key] == obj
 
 def test_get_central_registry():
     item = (
     central_registry.
     CentralRegistryControls.
     get_central_registry(
-        "key1"
+        ["key1", "key2"]
     )
     )
+    assert item == "test item"
+
