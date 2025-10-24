@@ -13,21 +13,22 @@ def test_new_day_event():
     )
     clock.new_day_event_calls.clear()
     clock._current_day = fake_now.date()
-
-    def fake_now_tick():
-        nonlocal fake_now
-        fake_now += datetime.timedelta(seconds=1)
-        return fake_now
-    
     feedback = []
 
-    def new_day_event_user():
+    def fake_now_tick(**kwarg):
+        nonlocal fake_now
+        fake_now += datetime.timedelta(**kwarg)
+
+    def dummy_function():
         feedback.append("used")
 
-    clock.on_new_day(new_day_event_user)
-    
-    for i in range(15):
-        clock.check_new_day(lambda: fake_now)
-        fake_now_tick()
+    def main_sequence():
 
+        clock.on_new_day(dummy_function)
+
+        for i in range(15):
+            clock.check_new_day(lambda: fake_now)
+            fake_now_tick(seconds=1)
+    
+    main_sequence()
     assert feedback == ["used"]

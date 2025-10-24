@@ -1,5 +1,5 @@
 
-from datetime import datetime
+import datetime
 
 
 class UserGoal():
@@ -14,4 +14,11 @@ class UserGoal():
         self.goal_duration_progress = 0
         self.dict = {}
 
-        
+    def day_end():
+
+        # remember, if u use datetime.now here,
+        # it pastes the next day instead,
+        # not the ended day.
+        # As serie said use -timedelta(days=1).
+
+        pass
