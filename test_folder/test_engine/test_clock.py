@@ -23,7 +23,6 @@ def test_new_day_event():
         feedback.append("used")
 
     def main_sequence():
-
         clock.on_new_day(dummy_function)
 
         for i in range(15):
