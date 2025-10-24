@@ -1,6 +1,5 @@
 
 
-
 central_registry = {}
 
 
@@ -10,14 +9,23 @@ class CentralRegistryControls():
             key,
             obj,
     ):
-        if isinstance(key, str):
+        def set_non_nested_key():
             central_registry[key] = obj
             return
         
-        ref = central_registry
-        for i in key[:-1]:
-            ref = ref[i]
-        ref[key[-1]] = obj
+        def set_nested_key():
+            ref = central_registry
+            for i in key[:-1]:
+                ref = ref[i]
+            ref[key[-1]] = obj
+        
+        def main_sequence():
+            if isinstance(key, str):
+                set_non_nested_key()
+            else:
+                set_nested_key()
+        
+        main_sequence()
 
 
     def get_central_registry(key):
@@ -28,7 +36,7 @@ class CentralRegistryControls():
         
         for i in key:
             ref = ref[i]
-        return ref
+        return ref              #chop chop in weekend
 
 if __name__ == "__main__":
     pass
