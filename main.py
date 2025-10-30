@@ -1,8 +1,8 @@
 
 
-import engine.central_registry as central_registry
-import engine.goal_manager as goal_manager
-import engine.user_input_manager as user_input_manager
+from engine import central_registry as central_registry
+from engine import goal_manager as goal_manager
+from engine import user_input_manager as user_input_manager
 
 
 def define_goal():
@@ -16,6 +16,9 @@ def define_goal():
         goal_duration,
     )
     )
+
+def test_commit_pc():
+    pass
 
 
 

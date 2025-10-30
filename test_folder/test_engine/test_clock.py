@@ -1,6 +1,7 @@
 
 import datetime
-import engine.clock as clock
+from engine import clock as clock
+
 
 def test_new_day_event():
     fake_now = datetime.datetime(

@@ -1,5 +1,4 @@
-import engine.goal_manager as goal_manager
-
+from engine import goal_manager as goal_manager
 
 
 user_goal = (
