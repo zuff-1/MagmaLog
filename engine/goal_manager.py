@@ -7,12 +7,13 @@ class UserGoal():
     def __init__(
             self,
             name,
-            goal_duration,
+            target_duration,
     ):
         self.name = name
-        self.goal_duration = goal_duration
-        self.goal_duration_progress = 0
+        self.target_duration = target_duration
+        self.target_duration_progress = 0
         self.dict = {}
+
 
     def day_end():
 

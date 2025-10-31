@@ -5,7 +5,7 @@ user_goal = (
 goal_manager.
 UserGoal(
     name = "code",
-    goal_duration = 7200,
+    target_duration = 7200,
 )
 )
 
