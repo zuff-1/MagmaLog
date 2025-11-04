@@ -1,15 +1,11 @@
 
-from datetime import datetime
+import datetime
 
 
 
-
-present = datetime.now()
-
-print(present)
-print(present.date())
-print(present.time())
+dict = {}
 
 
+epic = dict[key1]
 
-
+print(epic)
