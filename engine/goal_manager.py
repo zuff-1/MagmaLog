@@ -45,3 +45,19 @@ class UserGoal():
                 "target_duration": self.target_duration,
                 "is_achieved": is_achieved,
             }
+    
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "target_duration": self.target_duration,
+            "data": self.dict
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        goal = cls(
+            name = data["name"],
+            target_duration = data["target_duration"]
+        )
+        goal.dict = data["data"]
+        return goal
