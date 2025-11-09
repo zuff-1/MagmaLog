@@ -1,3 +1,3 @@
 # A Program That Helps You Achieve Your Goals!
 
-First version WIP
+Create daily goals and their target duration, then log and neatly track your progress.
