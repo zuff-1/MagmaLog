@@ -47,7 +47,7 @@ class UserGoal():
                 "is_achieved": is_achieved,
             }
     
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "name": self.name,
             "target_duration": self.target_duration,
