@@ -1,4 +1,4 @@
-from engine import central_registry as central_registry
+from core.engine import central_registry as central_registry
 
 
 def test_set_central_registry():

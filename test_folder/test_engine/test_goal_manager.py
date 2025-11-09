@@ -1,4 +1,4 @@
-from engine import goal_manager as goal_manager
+from core.engine import goal_manager as goal_manager
 import datetime
 
 user_goal = (

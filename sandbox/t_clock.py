@@ -1,9 +1,9 @@
 
 import datetime
-from engine import clock as clock
+from sandbox import clock as clock
 
 
-def test_new_day_event():
+def t_new_day_event():
     fake_now = datetime.datetime(
         year=727,
         month=10,
