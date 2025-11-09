@@ -1,19 +1,15 @@
 
 
-from core.engine import central_registry as central_registry
-from core.engine import goal_manager as goal_manager
-from core.engine import user_input_manager as user_input_manager
-
-def define_goal():
-    pass
+from ui_terminal import user_interface as user_interface
 
 
 def main_sequence():
-    define_goal()
+    while True:
+        user_interface.main_menu()
 
 
-
-main_sequence()
+if __name__ == "__main__":
+    main_sequence()
 
 
 
