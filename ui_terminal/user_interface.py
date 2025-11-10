@@ -9,9 +9,9 @@ from core.engine import central_registry as central_registry
 command_list = {}
 
 def command(
-        categories: list,
-        command,
-        description,
+        categories: str | list[str],
+        command: str,
+        description: str,
         ):
     if isinstance(categories, str):
         categories = [categories]
@@ -24,7 +24,9 @@ def command(
         return func
     return decorator
 
-
+# =====================
+# Goal Commands
+# =====================
 @command(
         command="create_goal",
         description="Creates a new goal.",
@@ -32,9 +34,18 @@ def command(
         )
 def create_goal():
     name = input("Enter goal name: ")
-    target_duration = input("Enter target duration (in seconds for now): ")
+    while True:
+        target_duration = input("Enter target duration (in seconds for now): ")
+        try:
+            target_duration = int(target_duration)
+            break
+        except ValueError:
+            print("Target duration must be a number, try again.")
     goal_manager.UserGoal(name=name, target_duration=target_duration)
 
+# =====================
+# Print Commands
+# =====================
 @command(
         command="print_central_registry",
         description="Prints the central registry which contains every object the user has made.",
@@ -45,6 +56,23 @@ def print_central_registry():
     print(f"{central_registry.central_registry}")
     enter_to_continue()
 
+@command(
+        command="print_goal",
+        description="Choose a goal and print every data it has it a human readable form.",
+        categories="main_menu",
+)
+def print_goal():
+    registry = central_registry.central_registry
+
+    print("Goals in central_registry: ")
+    for goal in registry["goals"]:
+        print(f"{goal}")
+
+    input(">")
+
+# =====================
+# Utility Commands
+# =====================
 @command(
         command="exit",
         description="Exits the program.",

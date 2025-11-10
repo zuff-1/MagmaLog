@@ -6,9 +6,15 @@ class UserGoal():
 
     def __init__(
             self,
-            name,
-            target_duration,
+            name: str,
+            target_duration: int,
     ):
+        if not isinstance(name, str):
+            raise TypeError(f"name must be str, received: {type(name).__name__}")
+        
+        if not isinstance(target_duration, int):
+            raise TypeError(f"target_duration must be int, received: {type(target_duration).__name__}")
+
         self.name = name
         self.target_duration = target_duration
         self.dict = {}
@@ -17,9 +23,9 @@ class UserGoal():
     def add_goal_progress(
             self,
             date_provider=datetime.date.today,
-            seconds=0,
-            minutes=0,
-            hours=0,
+            seconds: int = 0,
+            minutes: int = 0,
+            hours: int = 0,
             ):
         today = date_provider()
         key = today.isoformat()
