@@ -25,8 +25,9 @@ def set_central_registry(key: str | list[str], obj: Any):
             validity = isinstance(list_item, str)
             items.append({list_item: validity})
         raise TypeError(
-            "all items in key list must be strings\n"
-            f"items received : {items}"
+            f"all items in key list must be strings\n"
+            f"items received and their validity : \n"
+            f"{items}"
         )
 
     if isinstance(key, str):
@@ -59,8 +60,9 @@ def get_central_registry(key: str | list[str]):
             validity = isinstance(list_item, str)
             items.append({list_item: validity})
         raise TypeError(
-            "all items in key list must be strings\n"
-            f"items received : {items}"
+            f"all items in key list must be strings\n"
+            f"items received and their validity : \n"
+            f"{items}"
         )
     
     ref = central_registry
