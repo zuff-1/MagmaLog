@@ -1,5 +1,6 @@
 from typing import Any
 
+
 central_registry = {
     "goals": {},
 }
@@ -11,19 +12,22 @@ def set_central_registry(key: str | list[str], obj: Any):
             "Key cannot be empty"
             "edge case, the key is most likely an empty list/anything falsy."
         )
-    
+
     if not isinstance(key, (str, list)):
-        raise TypeError(f"key must be a string or list of strings, received: {type(key).__name__}")
+        raise TypeError(
+                        f"key must be a string or list containing strings."
+                        f"received: {type(key).__name__}"
+                    )
     
     if isinstance(key, list) and not all(isinstance(list_item, str) for list_item in key):
         items = []
         for list_item in key:
-            items.append
+            validity = isinstance(list_item, str)
+            items.append({list_item: validity})
         raise TypeError(
-            "all items in key list must be strings"
-            "items receieved : {}"
+            "all items in key list must be strings\n"
+            f"items received : {items}"
         )
-
 
     if isinstance(key, str):
         central_registry[key] = obj
@@ -37,12 +41,27 @@ def set_central_registry(key: str | list[str], obj: Any):
         ref[key[-1]] = obj
 
 def get_central_registry(key: str | list[str]):
+    if not key:
+        raise ValueError(
+            "Key cannot be empty"
+            "edge case, the key is most likely an empty list/anything falsy."
+        )
+
     if not isinstance(key, (str, list)):
-        raise TypeError(f"key must be a string or list of strings, receieved: {type(key).__name__}")
+        raise TypeError(
+                        f"key must be a string or list containing strings."
+                        f"received: {type(key).__name__}"
+                    )
     
     if isinstance(key, list) and not all(isinstance(list_item, str) for list_item in key):
-        raise TypeError("all items in key list must be strings.")
-    
+        items = []
+        for list_item in key:
+            validity = isinstance(list_item, str)
+            items.append({list_item: validity})
+        raise TypeError(
+            "all items in key list must be strings\n"
+            f"items received : {items}"
+        )
     
     ref = central_registry
 

@@ -24,16 +24,15 @@ class UserGoal():
             self,
             date_provider=datetime.date.today,
             seconds: int = 0,
-            minutes: int = 0,
-            hours: int = 0,
             ):
+        if not isinstance(seconds, int):
+            raise TypeError("waaa not made")
+        # MAKE THISSSSDDSSDSD
+
         today = date_provider()
         key = today.isoformat()
-        progress = (
-            (seconds)
-            + (minutes * 60)
-            + (hours * 3600)
-        )
+        progress = seconds
+
         if key in self.dict:
             saved_progress = self.dict[key]["action_duration"]
             progress += saved_progress
