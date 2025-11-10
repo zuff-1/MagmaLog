@@ -1,3 +1,12 @@
+# reminders from nighttime:
+#-unfinished raise and stuff in goal_manager
+#-minutes and hours conversion should not be handled inside of goal_manager's core functions.
+# thats about it really,
+# to be added:
+#-scan and cleanup through every single file,
+#adding annotations, error raises, type handling, etc.
+# please sleep better next time, 4 hours was bad.
+
 from typing import Any
 
 

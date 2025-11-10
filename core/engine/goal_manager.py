@@ -1,4 +1,4 @@
-from core.engine import central_registry
+from core.engine import central_registry as central_registry
 import datetime
 
 
@@ -18,7 +18,7 @@ class UserGoal():
         self.name = name
         self.target_duration = target_duration
         self.dict = {}
-        central_registry.central_registry["goals"][name] = self
+        central_registry.set_central_registry(["goals", name], self)
 
     def add_goal_progress(
             self,
