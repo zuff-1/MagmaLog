@@ -11,14 +11,14 @@ central_registry = {
 def _validate_key(key: str | list[str]) -> None:
     if not key:
         raise ValueError(
-            "Key cannot be empty\n"
-            "edge case, the key is most likely an empty list/anything falsy.\n"
+            "key cannot be empty\n"
+            "edge case, the key is most likely an empty list/anything falsy\n"
             f"received: {key}\n"
             f"type: {type(key).__name__}"
         )
     if not isinstance(key, (str, list)):
         raise TypeError(
-            "key must be a string or list containing strings.\n"
+            "key must be a string or list containing strings\n"
             f"received: {key}\n"
             f"type: {type(key).__name__}"
         )
@@ -29,12 +29,15 @@ def _validate_key(key: str | list[str]) -> None:
             items.append({list_item: validity})
         raise TypeError(
             "all items in key list must be strings\n"
-            "items received and their validity : \n"
+            "items received and their validity :\n"
             f"{items}"
         )
 
 
-def set_central_registry(key: str | list[str], obj: Any):
+def set_central_registry(
+        key: str | list[str],
+        obj: Any,
+    ):
     _validate_key(key)
 
     if isinstance(key, str):

@@ -15,13 +15,14 @@ class UserGoal():
         if not isinstance(name, str):
             raise TypeError(
                 "name must be a string\n"
-                f"received: {name}"
+                f"received: {name}\n"
                 f"type: {type(name).__name__}"
             )
-
         if not isinstance(target_duration, int):
             raise TypeError(
-                f"target_duration must be integer received: {type(target_duration).__name__}"
+                "target_duration must be an integer\n"
+                f"received: {target_duration}\n"
+                f"type: {type(target_duration).__name__}"
             )
 
         self.name = name
