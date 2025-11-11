@@ -1,11 +1,4 @@
-# reminders from nighttime:
-#-unfinished raise and stuff in goal_manager
-#-minutes and hours conversion should not be handled inside of goal_manager's core functions.
-# thats about it really,
-# to be added:
-#-scan and cleanup through every single file,
-#adding annotations, error raises, type handling, etc.
-# please sleep better next time, 4 hours was bad.
+
 
 from typing import Any
 
@@ -15,29 +8,34 @@ central_registry = {
 }
 
 
-def set_central_registry(key: str | list[str], obj: Any):
+def _validate_key(key: str | list[str]) -> None:
     if not key:
         raise ValueError(
-            "Key cannot be empty"
-            "edge case, the key is most likely an empty list/anything falsy."
+            "Key cannot be empty\n"
+            "edge case, the key is most likely an empty list/anything falsy.\n"
+            f"received: {key}\n"
+            f"type: {type(key).__name__}"
         )
-
     if not isinstance(key, (str, list)):
         raise TypeError(
-                        f"key must be a string or list containing strings."
-                        f"received: {type(key).__name__}"
-                    )
-    
+            "key must be a string or list containing strings.\n"
+            f"received: {key}\n"
+            f"type: {type(key).__name__}"
+        )
     if isinstance(key, list) and not all(isinstance(list_item, str) for list_item in key):
         items = []
         for list_item in key:
             validity = isinstance(list_item, str)
             items.append({list_item: validity})
         raise TypeError(
-            f"all items in key list must be strings\n"
-            f"items received and their validity : \n"
+            "all items in key list must be strings\n"
+            "items received and their validity : \n"
             f"{items}"
         )
+
+
+def set_central_registry(key: str | list[str], obj: Any):
+    _validate_key(key)
 
     if isinstance(key, str):
         central_registry[key] = obj
@@ -51,34 +49,12 @@ def set_central_registry(key: str | list[str], obj: Any):
         ref[key[-1]] = obj
 
 def get_central_registry(key: str | list[str]):
-    if not key:
-        raise ValueError(
-            "Key cannot be empty"
-            "edge case, the key is most likely an empty list/anything falsy."
-        )
-
-    if not isinstance(key, (str, list)):
-        raise TypeError(
-                        f"key must be a string or list containing strings."
-                        f"received: {type(key).__name__}"
-                    )
-    
-    if isinstance(key, list) and not all(isinstance(list_item, str) for list_item in key):
-        items = []
-        for list_item in key:
-            validity = isinstance(list_item, str)
-            items.append({list_item: validity})
-        raise TypeError(
-            f"all items in key list must be strings\n"
-            f"items received and their validity : \n"
-            f"{items}"
-        )
-    
-    ref = central_registry
+    _validate_key(key)
 
     if isinstance(key, str):
-        return ref[key]
+        return central_registry[key]
     else:
+        ref = central_registry
         for i in key:
             ref = ref[i]
         return ref

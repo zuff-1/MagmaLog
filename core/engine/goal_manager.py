@@ -1,5 +1,8 @@
-from core.engine import central_registry as central_registry
+from typing import Callable
 import datetime
+
+
+from core.engine import central_registry as central_registry
 
 
 class UserGoal():
@@ -10,10 +13,16 @@ class UserGoal():
             target_duration: int,
     ):
         if not isinstance(name, str):
-            raise TypeError(f"name must be str, received: {type(name).__name__}")
-        
+            raise TypeError(
+                "name must be a string\n"
+                f"received: {name}"
+                f"type: {type(name).__name__}"
+            )
+
         if not isinstance(target_duration, int):
-            raise TypeError(f"target_duration must be int, received: {type(target_duration).__name__}")
+            raise TypeError(
+                f"target_duration must be integer received: {type(target_duration).__name__}"
+            )
 
         self.name = name
         self.target_duration = target_duration
@@ -22,12 +31,11 @@ class UserGoal():
 
     def add_goal_progress(
             self,
-            date_provider=datetime.date.today,
+            date_provider: Callable[[],datetime.date],
             seconds: int = 0,
             ):
         if not isinstance(seconds, int):
             raise TypeError("waaa not made")
-        # MAKE THISSSSDDSSDSD
 
         today = date_provider()
         key = today.isoformat()
