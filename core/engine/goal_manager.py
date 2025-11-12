@@ -33,14 +33,26 @@ class UserGoal():
     def add_goal_progress(
             self,
             date_provider: Callable[[],datetime.date],
-            seconds: int = 0,
+            progress_seconds: int = 0,
             ):
-        if not isinstance(seconds, int):
-            raise TypeError("waaa not made")
+        if not callable(date_provider):
+            raise TypeError(
+                "date_provider must be a callable\n"
+                f"received: {date_provider}"
+                f"type: {type(date_provider).__name__}"
+            )
+        #to be made: check if it returns the correct object
+
+        if not isinstance(progress_seconds, int):
+            raise TypeError(
+                "progress_seconds must be an integer\n"
+                f"received: {progress_seconds}\n"
+                f"type: {type(progress_seconds).__name__}"
+            )
 
         today = date_provider()
         key = today.isoformat()
-        progress = seconds
+        progress = progress_seconds
 
         if key in self.dict:
             saved_progress = self.dict[key]["action_duration"]
