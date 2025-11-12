@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import Callable
 
 
 from core.engine import goal_manager as goal_manager
@@ -49,7 +50,7 @@ def command(
     
     if isinstance(categories, str):
         categories = [categories]
-    def decorator(func):
+    def decorator(func: Callable):
         for cat in categories:
             if cat not in command_list:
                 command_list[cat] = {}
