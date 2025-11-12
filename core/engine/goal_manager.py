@@ -34,15 +34,20 @@ class UserGoal():
             self,
             date_provider: Callable[[],datetime.date],
             progress_seconds: int = 0,
-            ):
+            ) -> None:
         if not callable(date_provider):
             raise TypeError(
                 "date_provider must be a callable\n"
                 f"received: {date_provider}"
                 f"type: {type(date_provider).__name__}"
             )
-        #to be made: check if it returns the correct object
-
+        result = date_provider()
+        if not isinstance(result, datetime.date):
+            raise TypeError(
+                "date_provider must return a datetime.date object"
+                f"received: {result}"
+                f"type: {type(result)}"
+            )
         if not isinstance(progress_seconds, int):
             raise TypeError(
                 "progress_seconds must be an integer\n"
@@ -63,7 +68,6 @@ class UserGoal():
                 and self.dict[key]["action_duration"] >= self.dict[key]["target_duration"]
             ):
                 self.dict[key]["is_achieved"] = True
-        
         else:
             is_achieved = progress >= self.target_duration
             self.dict[key] = {

@@ -1,3 +1,7 @@
+# similar apps
+- ATracker by wonderapps AB (on playstore/web)
+- Timelog by CodeGamma Technologies (on playstore/web)
+
 # todo list
 - minutes and hours conversion should not be handled inside of goal_manager's core functions, change that.
 - do the cleanup below.
@@ -13,4 +17,5 @@ readiblity trumps minimalism.
 
 # cleanup progress
 - central_registry done
-- goal_manager in progress
+- goal_manager done
+- user_interface in progress
