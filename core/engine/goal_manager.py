@@ -4,6 +4,8 @@ import datetime
 
 from core.engine import central_registry as central_registry
 
+#unfinished
+#remember to add falsy raise to core goal_manager engine for if the input is empty string
 
 class UserGoal():
 
@@ -13,15 +15,15 @@ class UserGoal():
             target_duration: int,
             description: str,
     ):
-        if not isinstance(description, str):
-            raise TypeError(
-                "description must be a string\n"
-                f"received: {name}\n"
-                f"type: {type(name).__name__}"
-            )
         if not isinstance(name, str):
             raise TypeError(
                 "name must be a string\n"
+                f"received: {name}\n"
+                f"type: {type(name).__name__}"
+            )
+        if not name:
+            raise ValueError(
+                "name cannot be falsy\n"
                 f"received: {name}\n"
                 f"type: {type(name).__name__}"
             )
@@ -30,6 +32,18 @@ class UserGoal():
                 "target_duration must be an integer\n"
                 f"received: {target_duration}\n"
                 f"type: {type(target_duration).__name__}"
+            )
+        if not target_duration:
+            raise ValueError(
+                "target_duration cannot be falsy\n"
+                f"received: {name}\n"
+                f"type: {type(name).__name__}"
+            )
+        if not isinstance(description, str):
+            raise TypeError(
+                "description must be a string\n"
+                f"received: {name}\n"
+                f"type: {type(name).__name__}"
             )
 
         self.name = name

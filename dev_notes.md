@@ -3,4 +3,6 @@
 - Timelog by CodeGamma Technologies (on playstore/web)
 
 # todo list
-- #unfinished in user_interface, with additional task
+- validator.py
+- actually use the validator everywhere
+- ui_terminal command and ui file separation
