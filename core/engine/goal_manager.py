@@ -11,7 +11,14 @@ class UserGoal():
             self,
             name: str,
             target_duration: int,
+            description: str,
     ):
+        if not isinstance(description, str):
+            raise TypeError(
+                "description must be a string\n"
+                f"received: {name}\n"
+                f"type: {type(name).__name__}"
+            )
         if not isinstance(name, str):
             raise TypeError(
                 "name must be a string\n"
@@ -27,7 +34,10 @@ class UserGoal():
 
         self.name = name
         self.target_duration = target_duration
-        self.dict = {}
+        self.description = description
+
+        self.data = {}
+        self.date_created = datetime.date.today().isoformat()
         central_registry.set_central_registry(["goals", name], self)
 
     def add_goal_progress(
@@ -59,18 +69,18 @@ class UserGoal():
         key = today.isoformat()
         progress = progress_seconds
 
-        if key in self.dict:
-            saved_progress = self.dict[key]["action_duration"]
+        if key in self.data:
+            saved_progress = self.data[key]["action_duration"]
             progress += saved_progress
-            self.dict[key]["action_duration"] = progress
+            self.data[key]["action_duration"] = progress
             if (
-                not self.dict[key]["is_achieved"]
-                and self.dict[key]["action_duration"] >= self.dict[key]["target_duration"]
+                not self.data[key]["is_achieved"]
+                and self.data[key]["action_duration"] >= self.data[key]["target_duration"]
             ):
-                self.dict[key]["is_achieved"] = True
+                self.data[key]["is_achieved"] = True
         else:
             is_achieved = progress >= self.target_duration
-            self.dict[key] = {
+            self.data[key] = {
                 "date": key,
                 "action_duration": progress,
                 "target_duration": self.target_duration,
@@ -81,14 +91,20 @@ class UserGoal():
         return {
             "name": self.name,
             "target_duration": self.target_duration,
-            "data": self.dict
+            "description": self.description,
+
+            "data": self.data,
+            "date_created": self.date_created,
         }
     
     @classmethod
     def from_dict(cls, data):
-        goal = cls(
-            name = data["name"],
-            target_duration = data["target_duration"]
-        )
-        goal.dict = data["data"]
-        return goal
+        goal = cls.__new__(cls)
+
+        goal.name = data["name"]
+        goal.target_duration = data["target_duration"]
+        goal.description = data["description"]      
+
+        goal.data = data["data"]
+        goal.date_created = data["date_created"]
+        central_registry.set_central_registry(["goals", data["name"]], goal)

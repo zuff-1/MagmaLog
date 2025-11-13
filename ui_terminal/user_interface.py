@@ -9,6 +9,7 @@ from core.engine import central_registry as central_registry
 
 command_list = {}
 
+
 def command(
         categories: str | list[str],
         command: str,
@@ -42,26 +43,32 @@ def command(
             f"received: {description}"
             f"type: {type(description).__name__}"
         )
-    if command in command_list[categories]:
-        raise KeyError(
-            "command already exists in the category"
-            f"command: {command}"
-        )
     
     if isinstance(categories, str):
         categories = [categories]
+
     def decorator(func: Callable):
         for cat in categories:
             if cat not in command_list:
                 command_list[cat] = {}
+            if command in command_list[cat]:
+                raise KeyError(
+                    "command already exists in the category"
+                    f"command: {command}"
+                )
             command_list[cat][command] = {"description": description, "function": func}
         return func
     return decorator
 
 def default_handle_error(e: Exception):
-    print(f"")
-    pass
-#unfinished
+    print(f"{type(e).__name__}: {e}")
+
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
+
+def enter_to_continue():
+    input("Press Enter to continue. . .")
+    
 
 # =====================
 # Goal Commands
@@ -72,7 +79,9 @@ def default_handle_error(e: Exception):
         categories="main_menu",
         )
 def create_goal():
+    clear_screen()
     name = input("Enter goal name: ")
+    description = input("Enter description: ")
     while True:
         target_duration = input("Enter target duration (in seconds for now): ")
         try:
@@ -81,9 +90,13 @@ def create_goal():
         except ValueError:
             print("Target duration must be an integer number, try again.")
     try:
-        goal_manager.UserGoal(name=name, target_duration=target_duration)
+        goal_manager.UserGoal(
+            name=name,
+            target_duration=target_duration,
+            description=description
+        )
     except Exception as e:
-        print(f"{e}")
+        default_handle_error(e)
 
 # =====================
 # Print Commands
@@ -100,17 +113,36 @@ def print_central_registry():
 
 @command(
         command="print_goal",
-        description="Choose a goal and print every data it has it a human readable form.",
+        description="Select and print a goal and its data.",
         categories="main_menu",
 )
 def print_goal():
+    clear_screen()
+    registry = central_registry.central_registry
+    print("List of goals:")
+    print()
+    for goals in registry["goals"]:
+        print(f"{goals}")
+    print("Enter a goal name to print.")
+    #unfinished
+
+    enter_to_continue()
+    #remember to add falsey raise to core goal_manager engine for if the input is empty string
+
+@command(
+        command="print_all_goals",
+        description="Choose a goal and print every data it has it a human readable form.",
+        categories="main_menu",
+)
+def print_all_goals():
     registry = central_registry.central_registry
 
     print("Goals in central_registry: ")
     for goal in registry["goals"]:
-        print(f"{goal}")
-
-    input(">")
+        goal_obj = registry["goals"][goal]
+        goal_dict_form = goal_obj.to_dict()
+        print(f"{goal_dict_form}")
+    enter_to_continue()
 
 # =====================
 # Utility Commands
@@ -122,13 +154,6 @@ def print_goal():
 )
 def exit():
     sys.exit()
-
-
-def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear")
-
-def enter_to_continue():
-    input("Press Enter to continue. . .")
 
 
 def main_menu():
