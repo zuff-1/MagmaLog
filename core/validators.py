@@ -56,6 +56,7 @@ def validate_parameter(
                     "iterable value has an invalid element"
                     f"iterable value: {value}"
                     f"invalid element: {element}"
+                    f"invalid element type: {type(element).__name__}"
                 )
     if not value:
         raise ValueError(
