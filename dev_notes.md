@@ -5,4 +5,3 @@
 # todo list
 - validator.py
 - actually use the validator everywhere
-- ui_terminal command and ui file separation

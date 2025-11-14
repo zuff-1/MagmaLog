@@ -3,6 +3,7 @@ import sys
 from typing import Callable
 
 
+from core.validators import validate_parameter
 from core.engine import goal_manager as goal_manager
 from core.engine import central_registry as central_registry
 
