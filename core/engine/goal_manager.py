@@ -2,10 +2,10 @@ from typing import Callable
 import datetime
 
 
+from core.validators import validate_parameter
 from core.engine import central_registry as central_registry
 
 #unfinished
-#remember to add falsy raise to core goal_manager engine for if the input is empty string
 
 class UserGoal():
 
@@ -15,18 +15,7 @@ class UserGoal():
             target_duration: int,
             description: str,
     ):
-        if not isinstance(name, str):
-            raise TypeError(
-                "name must be a string\n"
-                f"received: {name}\n"
-                f"type: {type(name).__name__}"
-            )
-        if not name:
-            raise ValueError(
-                "name cannot be falsy\n"
-                f"received: {name}\n"
-                f"type: {type(name).__name__}"
-            )
+        validate_parameter(value=name, expected_type=str, name="name")
         if not isinstance(target_duration, int):
             raise TypeError(
                 "target_duration must be an integer\n"

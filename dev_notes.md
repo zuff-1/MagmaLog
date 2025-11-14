@@ -3,5 +3,5 @@
 - Timelog by CodeGamma Technologies (on playstore/web)
 
 # todo list
-- validator.py
 - actually use the validator everywhere
+- ask it to check if the validator works or not with github link
