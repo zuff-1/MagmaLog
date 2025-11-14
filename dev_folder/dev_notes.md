@@ -4,4 +4,8 @@
 
 # todo list
 - actually use the validator everywhere
-- ask it to check if the validator works or not with github link
+
+# using validator progress
+- central_registry.py Done
+- goal_manager.py in Done
+- commands.py in progress

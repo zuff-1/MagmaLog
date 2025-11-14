@@ -13,6 +13,7 @@ def main_menu():
     print("====== Main Menu ======")
     print()
     print("Available commands: ")
+    print()
     for cmd in command_list[category]:
         print(f"{cmd} : {command_list[category][cmd]["description"]}")
     while True:

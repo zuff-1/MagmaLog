@@ -1,6 +1,7 @@
 
 
 from typing import Any
+from core.util_validators import validate_parameter
 
 
 central_registry = {
@@ -37,8 +38,10 @@ def _validate_key(key: str | list[str]) -> None:
 def set_central_registry(
         key: str | list[str],
         obj: Any,
-    ):
+    ) -> None:
+    
     _validate_key(key)
+    validate_parameter(obj, "obj")
 
     if isinstance(key, str):
         central_registry[key] = obj
@@ -51,7 +54,10 @@ def set_central_registry(
             ref = ref[i]
         ref[key[-1]] = obj
 
-def get_central_registry(key: str | list[str]):
+def get_central_registry(
+        key: str | list[str]
+    ):
+
     _validate_key(key)
 
     if isinstance(key, str):

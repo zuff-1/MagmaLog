@@ -2,10 +2,9 @@ from typing import Callable
 import datetime
 
 
-from core.validators import validate_parameter
+from core.util_validators import validate_parameter, validate_callable
 from core.engine import central_registry as central_registry
 
-#unfinished
 
 class UserGoal():
 
@@ -14,26 +13,11 @@ class UserGoal():
             name: str,
             target_duration: int,
             description: str,
-    ):
-        validate_parameter(value=name, expected_type=str, name="name")
-        if not isinstance(target_duration, int):
-            raise TypeError(
-                "target_duration must be an integer\n"
-                f"received: {target_duration}\n"
-                f"type: {type(target_duration).__name__}"
-            )
-        if not target_duration:
-            raise ValueError(
-                "target_duration cannot be falsy\n"
-                f"received: {name}\n"
-                f"type: {type(name).__name__}"
-            )
-        if not isinstance(description, str):
-            raise TypeError(
-                "description must be a string\n"
-                f"received: {name}\n"
-                f"type: {type(name).__name__}"
-            )
+    ) -> None:
+        
+        validate_parameter(name, "name", str)
+        validate_parameter(target_duration, "target_duration", int)
+        validate_parameter(description, "description", str)
 
         self.name = name
         self.target_duration = target_duration
@@ -45,28 +29,24 @@ class UserGoal():
 
     def add_goal_progress(
             self,
-            date_provider: Callable[[],datetime.date],
-            progress_seconds: int = 0,
+            progress_seconds: int,
+            date_provider: Callable[[],datetime.date] | None = None,
             ) -> None:
-        if not callable(date_provider):
-            raise TypeError(
-                "date_provider must be a callable\n"
-                f"received: {date_provider}"
-                f"type: {type(date_provider).__name__}"
-            )
-        result = date_provider()
-        if not isinstance(result, datetime.date):
-            raise TypeError(
-                "date_provider must return a datetime.date object"
-                f"received: {result}"
-                f"type: {type(result)}"
-            )
-        if not isinstance(progress_seconds, int):
-            raise TypeError(
-                "progress_seconds must be an integer\n"
-                f"received: {progress_seconds}\n"
-                f"type: {type(progress_seconds).__name__}"
-            )
+        
+        validate_parameter(progress_seconds, "progress_seconds", int)
+
+        if date_provider is not None:
+            validate_callable(date_provider, "date_provider")
+            
+            result = date_provider()
+            if not isinstance(result, datetime.date):
+                raise TypeError(
+                    "date_provider must return a datetime.date object"
+                    f"received: {result}"
+                    f"type: {type(result)}"
+                )
+        if date_provider is None:
+            date_provider = datetime.date.today
 
         today = date_provider()
         key = today.isoformat()
@@ -76,11 +56,13 @@ class UserGoal():
             saved_progress = self.data[key]["action_duration"]
             progress += saved_progress
             self.data[key]["action_duration"] = progress
+
             if (
                 not self.data[key]["is_achieved"]
                 and self.data[key]["action_duration"] >= self.data[key]["target_duration"]
             ):
                 self.data[key]["is_achieved"] = True
+                
         else:
             is_achieved = progress >= self.target_duration
             self.data[key] = {
