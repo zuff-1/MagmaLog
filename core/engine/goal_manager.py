@@ -2,8 +2,9 @@ from typing import Callable
 import datetime
 
 
-from core.util_validators import validate_parameter, validate_callable
 from core.engine import central_registry as central_registry
+from core.util_validators import validate_parameter, validate_callable
+from core.exceptions import GoalAlreadyExistsError
 
 
 class UserGoal():
@@ -18,6 +19,11 @@ class UserGoal():
         validate_parameter(name, "name", str)
         validate_parameter(target_duration, "target_duration", int)
         validate_parameter(description, "description", str)
+        if name in central_registry.central_registry["goals"]:
+            raise GoalAlreadyExistsError(
+                "a goal with the same name already exists in the central_registry\n"
+                f"received name: {name}"
+            )
 
         self.name = name
         self.target_duration = target_duration
@@ -45,7 +51,7 @@ class UserGoal():
                     f"received: {result}"
                     f"type: {type(result)}"
                 )
-        if date_provider is None:
+        else:
             date_provider = datetime.date.today
 
         today = date_provider()
