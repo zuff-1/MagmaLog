@@ -114,8 +114,18 @@ def enter_to_continue():
         )
 def create_goal():
     clear_screen()
+    registry = central_registry.central_registry
+    goals = registry["goals"]
     try:
-        name = input_handler("Enter goal name.", str)
+        while True:
+            try:
+                name = input_handler("Enter goal name.", str)
+            except CancelCommand:
+                return
+            if name in goals:
+                print("A goal with that name already exists, try again.")
+                continue
+            break
         target_duration = input_handler("Enter target duration (seconds).", int)
         description = input_handler(
             prompt="Enter description (can be empty)",
@@ -130,15 +140,14 @@ def create_goal():
         )
     except CancelCommand:
         return
-    except GoalError as e:
-        default_handle_error(e)
 
 # =====================
 # Print Commands
 # =====================
 @command(
         command="print_central_registry",
-        description="Prints the central registry which contains every object the user has made.",
+        description="Prints the central registry which contains every object the user has made. "
+        "warning: Ugly, actually prints the objects.",
         categories="main_menu",
 )
 def print_central_registry():

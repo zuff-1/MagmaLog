@@ -3,9 +3,5 @@
 - Timelog by CodeGamma Technologies (on playstore/web)
 
 # todo list
-- actually use the validator everywhere
-
-# using validator progress
-- central_registry.py Done
-- goal_manager.py in Done
-- commands.py in progress
+- in goal_manager.py make a variable that points to central registry,
+its unnecessarily long and unreadable currently.
