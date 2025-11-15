@@ -1,9 +1,10 @@
 import os
 import sys
-from typing import Callable
+from typing import Callable, Any, Type, Tuple
 
 
-from core.util_validators import validate_parameter, validate_callable
+from core.util_validators import validate_parameter
+from core.exceptions import GoalError
 from core.engine import goal_manager as goal_manager
 from core.engine import central_registry as central_registry
 
@@ -42,6 +43,56 @@ def command(
         return func
     return decorator
 
+
+class CancelCommand(Exception):
+    """
+    Raised when user inputs the cancel command.
+    """
+def input_handler(
+        prompt: str,
+        expected_type: Type,
+        allow_empty: bool = False,
+        default_value: Any = None,
+    ):
+    validate_parameter(prompt, "prompt", str)
+    validate_parameter(expected_type, "expected_type", type)
+    if not isinstance(allow_empty, bool):
+        raise TypeError(
+            "allow_empty has to be a boolean\n"
+            f"received: {allow_empty}\n"
+            f"type: {type(allow_empty).__name__}"
+        )
+
+    while True:
+        print(prompt)
+        print("(type cancel to exit command)")
+        value = input(">")
+
+        if value == "cancel":
+            raise CancelCommand()
+        
+        if (
+            not value
+            and allow_empty
+            and default_value is not None
+            ):
+            return default_value
+        
+        if not value and not allow_empty:
+            print("Input cannot be empty, try again.\n")
+            continue
+
+        if expected_type is int:
+            try:
+                value = int(value)
+                return value
+            except ValueError:
+                print("Input must be an integer number, try again.\n")
+                continue
+
+        return value
+
+
 def default_handle_error(e: Exception):
     print(f"{type(e).__name__}: {e}")
 
@@ -61,38 +112,24 @@ def enter_to_continue():
         categories="main_menu",
         )
 def create_goal():
-
     clear_screen()
-    while True:
-        name = input("Enter goal name: ")
-        if not name:
-            print("Name cannot be empty, try again.")
-        elif name in central_registry.central_registry["goals"]:
-            print("A goal with the same name already exists, try again.")
-        else:
-            break
-
-    clear_screen()
-    while True:
-        target_duration = input("Enter target duration (in seconds for now): ")
-        try:
-            target_duration = int(target_duration)
-            break
-        except:
-            print("Invalid input, target duration must be an integer number.")
-
-    clear_screen()
-    description = input("Enter description: ")
-    if not description:
-        description = "No description"
-
     try:
+        name = input_handler("Enter goal name.", str)
+        target_duration = input_handler("Enter target duration (seconds).", int)
+        description = input_handler(
+            prompt="Enter description (can be empty)",
+            expected_type=str,
+            allow_empty=True,
+            default_value="No description",
+        )
         goal_manager.UserGoal(
             name=name,
             target_duration=target_duration,
-            description=description
+            description=description,
         )
-    except Exception as e:
+    except CancelCommand:
+        return
+    except GoalError as e:
         default_handle_error(e)
 
 # =====================
@@ -117,22 +154,40 @@ def print_central_registry():
 def print_goal():
     clear_screen()
     registry = central_registry.central_registry
+    goals = registry["goals"]
 
-    print("List of goals:")
+    if not goals:
+        print("There are no goals to print.")
+        enter_to_continue()
+        return
+    
+    print("List of goals: ")
     print()
-    for goals in registry["goals"]:
-        print(f"{goals}")
+    for goal_name in goals:
+        print(goal_name)
     print()
-    print("Enter a goal name to print.")
+
     while True:
-        user_input = input(">")
-        if user_input in registry["goals"]:
-            break
-        else:
-            print("Input is not a goal name, try again.")
-    selected_goal = registry["goals"][user_input]
-    goal_dict_form = selected_goal.to_dict()
-    print(f"{goal_dict_form}")
+        try:
+            selected_name = input_handler(
+                prompt="Input a goal name to print.",
+                expected_type=str,
+            )
+        except CancelCommand:
+            return
+        if selected_name not in goals:
+            print("No goal with that name exists, try again.")
+            continue
+        break
+    goal = goals[selected_name]
+    goal_data = goal.to_dict()
+    
+    clear_screen()
+    print(f"Goal : {selected_name}")
+    print()
+    for key, value in goal_data.items():
+        print(f"{key}: {value}")
+    print()
     enter_to_continue()
 
 @command(
@@ -141,13 +196,24 @@ def print_goal():
         categories="main_menu",
 )
 def print_all_goals():
+    clear_screen()
     registry = central_registry.central_registry
+    goals = registry["goals"]
 
-    print("Goals in central_registry: ")
-    for goal in registry["goals"]:
-        goal_obj = registry["goals"][goal]
-        goal_dict_form = goal_obj.to_dict()
-        print(f"{goal_dict_form}")
+    if not goals:
+        print("There are no goals to print.")
+        enter_to_continue()
+        return
+    
+    for goal_name in goals:
+        goal_obj = goals[goal_name]
+        goal_data = goal_obj.to_dict()
+        
+        print(f"Goal : {goal_name}")
+        print()
+        for key, value in goal_data.items():
+            print(f"{key}: {value}")
+        print()
     enter_to_continue()
 
 # =====================
