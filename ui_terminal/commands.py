@@ -1,6 +1,6 @@
 import os
 import sys
-from typing import Callable, Any, Type, Tuple
+from typing import Callable, Any, Type
 
 
 from core.util_validators import validate_parameter

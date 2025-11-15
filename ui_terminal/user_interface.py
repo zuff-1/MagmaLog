@@ -1,6 +1,3 @@
-import os
-import sys
-from typing import Callable
 
 
 from ui_terminal.commands import command_list, clear_screen
