@@ -1,5 +1,4 @@
 
-
 class GoalError(Exception):
     """
     Base class for all goal-related errors.

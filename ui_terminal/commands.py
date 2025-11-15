@@ -95,6 +95,7 @@ def input_handler(
 
 def default_handle_error(e: Exception):
     print(f"{type(e).__name__}: {e}")
+    enter_to_continue()
 
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
