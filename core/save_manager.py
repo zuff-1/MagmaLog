@@ -89,5 +89,5 @@ def load_data(name: str):
             }
         else:
             registry[key] = value
-    
+            
     return registry

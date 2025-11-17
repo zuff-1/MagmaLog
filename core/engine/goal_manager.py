@@ -98,4 +98,5 @@ class UserGoal():
 
         goal.data = data["data"]
         goal.date_created = data["date_created"]
-        central_registry.set_central_registry(["goals", data["name"]], goal)
+        
+        return goal
