@@ -7,6 +7,7 @@ import re
 from core.utilities.validators import validate_parameter
 from core.engine import goal_manager as goal_manager
 from core.engine import central_registry as central_registry
+from core import save_manager
 
 
 command_list = {}
@@ -353,6 +354,24 @@ def print_all_goals():
 # =====================
 # Utility Commands
 # =====================
+
+@command(
+    command="save_data",
+    description="saves your data.",
+    categories="main_menu",
+)
+def save_data():
+    registry = central_registry.central_registry
+    save_manager.save_data(registry)
+
+@command(
+    command="load_data",
+    description="loads your save file.",
+    categories="main_menu"
+)
+def load_data():
+    save_manager.load_data()
+
 @command(
         command="exit",
         description="Exits the program.",
