@@ -8,6 +8,11 @@ central_registry = {
     "goals": {},
 }
 
+def get_template_registry():
+    return {
+    "goals": {},
+}
+
 
 def _validate_key(key: str | list[str]) -> None:
     if not key:
@@ -33,6 +38,7 @@ def _validate_key(key: str | list[str]) -> None:
             "items received and their validity :\n"
             f"{items}"
         )
+
 
 
 def set_central_registry(
