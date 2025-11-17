@@ -64,7 +64,9 @@ def select_profile():
         
     save_manager.select_profile(selected_profile)
     central_registry.central_registry = central_registry.get_template_registry()
-    central_registry = save_manager.load_data(selected_profile)
+    loaded = save_manager.load_data(selected_profile)
+    if loaded:
+        central_registry.central_registry = loaded
 
 
 @command(
