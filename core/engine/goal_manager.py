@@ -3,7 +3,7 @@ import datetime
 
 
 from core.engine import central_registry as central_registry
-from core.util_validators import validate_parameter, validate_callable
+from core.utilities.validators import validate_parameter, validate_callable
 from core.exceptions import GoalAlreadyExistsError
 
 

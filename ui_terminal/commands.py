@@ -1,10 +1,10 @@
 import os
 import sys
 from typing import Callable, Any, Type
+import re
 
 
-from core.util_validators import validate_parameter
-from core.exceptions import GoalError
+from core.utilities.validators import validate_parameter
 from core.engine import goal_manager as goal_manager
 from core.engine import central_registry as central_registry
 
@@ -17,6 +17,23 @@ def command(
         command: str,
         description: str,
         ):
+    """Put a function into command list to be used by the user in CLI.
+    
+    Can easily be used as a decorator, doesn't modify passed function at all.
+    
+    Args:
+        categories (str | list[str]): Which menu the command is available in. Examples:
+        - "main_menu"
+        - "goal_menu"
+        command (str): What the user has to input to execute the function.
+        description (str): Information about the command that is displayed.
+
+    Raises:
+        KeyError: command already exists in the category.
+
+    Returns:
+        Passed function
+    """
     
     validate_parameter(categories, "categories", (str, list), element_type=str)
     validate_parameter(command, "command", str)
@@ -91,6 +108,63 @@ def input_handler(
                 continue
 
         return value
+    
+
+def parse_time_string(time_string: str) -> int:
+    """Parse string of time like 5h 3m 22s into total seconds."""
+    pattern = r"(\d+)\s*(h|m|s)"
+    matches = re.findall(pattern, time_string.lower())
+    
+    if not matches:
+        raise ValueError(f"Invalid time format, no matches found: {input}")
+    
+    total_seconds = 0
+    
+    for value, unit in matches:
+        value = int(value)
+        if unit == "h":
+            total_seconds += value * 3600
+        elif unit == "m":
+            total_seconds += value * 60
+        elif unit == "s":
+            total_seconds += value
+        else:
+            raise ValueError(f"Invalid time unit: {unit}")
+    
+    return total_seconds
+
+
+def format_time_int(total_seconds: int) -> str:
+    hours = total_seconds // 3600
+    minutes = (total_seconds % 3600) // 60
+    seconds = total_seconds % 60
+
+    parts = []
+    if hours:
+        parts.append(f"{hours}h")
+    if minutes:
+        parts.append(f"{minutes}m")
+    if seconds or not parts:
+        parts.append(f"{seconds}s")
+    formatted_time = " ".join(parts)
+    
+    return formatted_time
+
+
+def time_input(prompt: str) -> int:
+    validate_parameter(prompt, "prompt", str)
+    
+    while True:
+        try:
+            user_input = input_handler(prompt, str)
+            total_seconds = parse_time_string(user_input)
+        except ValueError as e:
+            print(e)
+            print("try again.")
+            continue
+        break
+    
+    return total_seconds
 
 
 def default_handle_error(e: Exception):
@@ -117,6 +191,7 @@ def create_goal():
     registry = central_registry.central_registry
     goals = registry["goals"]
     try:
+        
         while True:
             try:
                 name = input_handler("Enter goal name.", str)
@@ -126,7 +201,9 @@ def create_goal():
                 print("A goal with that name already exists, try again.")
                 continue
             break
-        target_duration = input_handler("Enter target duration (seconds).", int)
+        
+        target_duration = time_input("Enter target duration. (Ex: 4h 47m 27s)")
+        
         description = input_handler(
             prompt="Enter description (can be empty)",
             expected_type=str,
@@ -139,6 +216,7 @@ def create_goal():
             target_duration=target_duration,
             description=description,
         )
+        
     except CancelCommand:
         return
 
@@ -156,12 +234,14 @@ def add_goal_progress():
         print("There is no goal to log progress into, create a goal first.")
         enter_to_continue()
         return
+    
+    print("Goal list:")
+    print()
+    for goal_name in goals:
+        print(goal_name)
+    print() 
+
     try:
-        print("Goal list:")
-        print()
-        for goal_name in goals:
-            print(goal_name)
-        print() 
         while True:
             try:
                 selected_goal_name = input_handler("Select a goal.", str)
@@ -172,9 +252,11 @@ def add_goal_progress():
                 continue
             selected_goal = goals[selected_goal_name]
             break
-        progress_seconds = input_handler("Input progress. (in seconds)", int)
+        
+        progress_seconds = time_input("Enter progress amount (Ex: 2h 33m 20s)")
         
         selected_goal.add_goal_progress(progress_seconds=progress_seconds)
+    
     except CancelCommand:
         return
 
@@ -184,7 +266,7 @@ def add_goal_progress():
 @command(
         command="print_central_registry",
         description="Prints the central registry which contains every object the user has made. "
-        "warning: Ugly, actually prints the objects.",
+        "warning: Not human readable.",
         categories="main_menu",
 )
 def print_central_registry():
@@ -195,7 +277,7 @@ def print_central_registry():
 
 @command(
         command="print_goal",
-        description="Select and print a goal and its data.",
+        description="Select and print a goal's properties. (long progress data excluded)",
         categories="main_menu",
 )
 def print_goal():
@@ -208,7 +290,7 @@ def print_goal():
         enter_to_continue()
         return
     
-    print("List of goals: ")
+    print("Goal list: ")
     print()
     for goal_name in goals:
         print(goal_name)
@@ -226,6 +308,7 @@ def print_goal():
             print("No goal with that name exists, try again.")
             continue
         break
+    
     goal = goals[selected_name]
     goal_data = goal.to_dict()
     
@@ -233,6 +316,10 @@ def print_goal():
     print(f"Goal : {selected_name}")
     print()
     for key, value in goal_data.items():
+        if key == "target_duration":
+            value = format_time_int(value)
+        if key == "data":
+            continue
         print(f"{key}: {value}")
     print()
     enter_to_continue()

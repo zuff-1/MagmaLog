@@ -1,7 +1,7 @@
 
 
 from typing import Any
-from core.util_validators import validate_parameter
+from core.utilities.validators import validate_parameter
 
 
 central_registry = {
