@@ -7,6 +7,7 @@ from platformdirs import user_data_dir
 
 from core.engine.goal_manager import UserGoal
 from core.utilities.validators import validate_parameter
+from core.engine import central_registry
 
 
 APP_NAME = "MagmaLog"
@@ -49,9 +50,9 @@ def create_profile(name: str):
     if path.exists():
         raise ValueError(f"Profile already exists! : {name}")
 
-    data = {}
+    empty_save = central_registry.get_template_registry()
 
-    path.write_text(json.dumps(data, indent=4))
+    path.write_text(json.dumps(empty_save, indent=4))
 
 def save_data(name: str, registry: dict) -> None:
     validate_parameter(name, "name", str)

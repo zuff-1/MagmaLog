@@ -20,7 +20,7 @@ def create_profile():
     profiles = save_manager.list_profile_names()
     while True:
         try:
-            user_input = input_handler("Enter goal name.", str)
+            user_input = input_handler("Enter profile name.", str)
         except CancelCommand:
             return
         if user_input in profiles:
