@@ -4,14 +4,13 @@ from typing import Any
 from core.utilities.validators import validate_parameter
 
 
-central_registry = {
-    "goals": {},
-}
-
 def get_template_registry():
     return {
     "goals": {},
 }
+    
+    
+central_registry = get_template_registry()
 
 
 def _validate_key(key: str | list[str]) -> None:
