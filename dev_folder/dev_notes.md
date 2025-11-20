@@ -3,5 +3,10 @@
 - Timelog by CodeGamma Technologies (on playstore/web)
 
 # todo list
-- in goal_manager.py make a variable that points to central registry,
-its unnecessarily long and unreadable currently.
+- feature to change description
+- feature to change target_duration
+- feature to delete profile/file
+- feature to rename file
+
+# low prio
+- add docstrings to stuff
