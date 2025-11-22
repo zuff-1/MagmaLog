@@ -77,6 +77,11 @@ class UserGoal():
                 "target_duration": self.target_duration,
                 "is_achieved": is_achieved,
             }
+            
+    def change_description():
+        
+        pass
+    #unfinished
     
     def to_dict(self) -> dict:
         return {
