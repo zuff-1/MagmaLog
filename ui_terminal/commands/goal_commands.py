@@ -8,6 +8,23 @@ from core.engine import goal_manager as goal_manager
 from core.engine import central_registry as central_registry
 
 
+def display_goals() -> None:
+    print("Goal list:")
+    print()
+    for goal_name in central_registry.central_registry["goals"]:
+        print(goal_name)
+        
+def select_goal() -> str:
+    goals = central_registry.central_registry["goals"]
+    
+    while True:
+        selected_goal_name = input_handler("Select a goal.", str)
+        if selected_goal_name not in goals:
+            print("No goal with that name exists, try again.")
+            continue
+        return selected_goal_name
+
+
 @command(
         command="create_goal",
         description="Creates a new goal.",
@@ -62,27 +79,43 @@ def add_goal_progress():
         enter_to_continue()
         return
     
-    print("Goal list:")
+    display_goals()
     print()
-    for goal_name in goals:
-        print(goal_name)
-    print() 
 
     try:
-        while True:
-            try:
-                selected_goal_name = input_handler("Select a goal.", str)
-            except CancelCommand:
-                return
-            if selected_goal_name not in goals:
-                print("No goal with that name exists, try again.")
-                continue
-            selected_goal = goals[selected_goal_name]
-            break
-        
+        selected_goal_name = select_goal()
+        selected_goal = goals[selected_goal_name]
+    
         progress_seconds = time_input("Enter progress amount (Ex: 2h 33m 20s)")
         
         selected_goal.add_goal_progress(progress_seconds=progress_seconds)
     
+    except CancelCommand:
+        return
+
+@command(
+    command="change_description",
+    description="Change a goal's description",
+    categories="main_menu",
+)
+def change_description():
+    goals = central_registry.central_registry["goals"]
+    clear_screen()
+    
+    display_goals()
+    print()
+    
+    try:
+        selected_goal_name = select_goal()
+        selected_goal = goals[selected_goal_name]
+        
+        print("Current description: ")
+        print()
+        print(f"{selected_goal.description}")
+        print()
+        
+        new_description = input_handler("Enter new description.", str)
+        selected_goal.change_description(new_description)
+        
     except CancelCommand:
         return

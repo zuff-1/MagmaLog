@@ -78,10 +78,11 @@ class UserGoal():
                 "is_achieved": is_achieved,
             }
             
-    def change_description():
+    def change_description(self, new_description: str) -> None:
+        validate_parameter(new_description, "new_description", str)
         
-        pass
-    #unfinished
+        self.description = new_description
+
     
     def to_dict(self) -> dict:
         return {
