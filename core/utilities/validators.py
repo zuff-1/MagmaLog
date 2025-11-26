@@ -18,10 +18,10 @@ def _validate_type_or_tuple(
             f"type: {type(label).__name__}"
         )
     
-    if isinstance(value, Type):
-        return True
+    if isinstance(value, type):
+        return
     if isinstance(value, Tuple) and all(isinstance(element, Type) for element in value):
-        return True
+        return
     
     raise ValidatorError(
         f"{label} must be type or a tuple of types (also cannot be None)\n"

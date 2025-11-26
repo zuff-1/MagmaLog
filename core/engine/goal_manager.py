@@ -83,6 +83,11 @@ class UserGoal():
         
         self.description = new_description
 
+    def change_target_duration(self, new_target_duration: int):
+        validate_parameter(new_target_duration, "new_target_duration", int)
+
+        self.target_duration = new_target_duration
+
     
     def to_dict(self) -> dict:
         return {
