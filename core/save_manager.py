@@ -92,3 +92,8 @@ def load_data(name: str):
             registry[key] = value
             
     return registry
+
+def delete_profile(profile_name: str):
+
+    pass
+#unfinished
