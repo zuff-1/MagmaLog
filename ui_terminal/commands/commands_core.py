@@ -1,11 +1,14 @@
 import os
-from typing import Callable, Any, Type
+from typing import Callable, Any, Type, TypeVar, overload
 import re
 
 
 from core.utilities.validators import validate_parameter
 from core.engine import goal_manager as goal_manager
 from core.engine import central_registry as central_registry
+
+
+T = TypeVar("T")
 
 
 command_list = {}
@@ -64,12 +67,17 @@ class CancelCommand(Exception):
     """
     Raised when user inputs the cancel command.
     """
+@overload
+def input_handler(prompt: str, expected_type: type[str], allow_empty: bool = False, default_value: str | None = None) -> str: ...
+@overload
+def input_handler(prompt: str, expected_type: type[int], allow_empty: bool = False, default_value: int | None = None) -> int: ...
+
 def input_handler(
         prompt: str,
-        expected_type: Type,
+        expected_type: type[Any],
         allow_empty: bool = False,
         default_value: Any = None,
-    ):
+    ) -> Any:
     validate_parameter(prompt, "prompt", str)
     validate_parameter(expected_type, "expected_type", type)
     if not isinstance(allow_empty, bool):
