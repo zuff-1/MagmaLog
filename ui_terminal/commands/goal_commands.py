@@ -2,7 +2,7 @@
 
 from ui_terminal.commands.commands_core import (
     command, clear_screen, input_handler, CancelCommand, time_input,
-    enter_to_continue,
+    enter_to_continue, format_time_int
 )
 from core.engine import goal_manager as goal_manager
 from core.engine import central_registry as central_registry
@@ -116,6 +116,33 @@ def change_description():
         
         new_description = input_handler("Enter new description.", str)
         selected_goal.change_description(new_description)
+        
+    except CancelCommand:
+        return
+
+@command(
+        command="change_target_duration",
+        description="Change a goal's target duration.",
+        categories="main_menu",
+)
+def change_target_duration():
+    goals = central_registry.central_registry["goals"]
+    clear_screen()
+    
+    display_goals()
+    print()
+    
+    try:
+        selected_goal_name = select_goal()
+        selected_goal = goals[selected_goal_name]
+        
+        print("Current target duration: ")
+        print()
+        print(f"{format_time_int(selected_goal.target_duration)}")
+        print()
+        
+        new_target_duration = time_input("Enter new target duration (ex: 1h 12m 44s).")
+        selected_goal.change_target_duration(new_target_duration)
         
     except CancelCommand:
         return
