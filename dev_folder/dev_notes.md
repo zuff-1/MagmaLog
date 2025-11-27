@@ -6,3 +6,4 @@
 - feature to delete profile/file
 - feature to rename file
 - chop chop the menu
+- print progresses

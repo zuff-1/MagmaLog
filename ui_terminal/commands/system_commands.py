@@ -13,7 +13,7 @@ from core import save_manager
 @command(
     command="create_profile",
     description="Create a profile.",
-    categories="main_menu",
+    categories=["main_menu", "start_menu"],
 )
 def create_profile():
     clear_screen()
@@ -32,7 +32,7 @@ def create_profile():
 @command(
     command="select_profile",
     description="Select a profile to load and switch into.",
-    categories="main_menu"
+    categories=["main_menu", "start_menu"],
 )
 def select_profile():
     clear_screen()
@@ -71,7 +71,7 @@ def select_profile():
 @command(
     command="save_data",
     description="Saves your data into the current selected profile.",
-    categories="main_menu",
+    categories=["main_menu"],
 )
 def save_data():
     clear_screen()
@@ -88,7 +88,7 @@ def save_data():
 @command(
     command="save_data_as",
     description="Save data into a selected profile.",
-    categories="main_menu",
+    categories=["main_menu"],
 )
 def save_data_as():
     clear_screen()
@@ -124,7 +124,7 @@ def save_data_as():
 @command(
         command="exit",
         description="Exits the program.",
-        categories="main_menu",
+        categories=["main_menu", "start_menu"],
 )
 def exit():
     sys.exit()    
