@@ -28,7 +28,7 @@ def select_goal() -> str:
 @command(
         command="create_goal",
         description="Creates a new goal.",
-        categories="main_menu",
+        categories="goal_menu",
         )
 def create_goal():
     clear_screen()
@@ -67,7 +67,7 @@ def create_goal():
 @command(
     command="add_goal_progress",
     description="Log your progress on a goal.",
-    categories="main_menu",
+    categories="goal_menu",
 )
 def add_goal_progress():
     clear_screen()
@@ -96,7 +96,7 @@ def add_goal_progress():
 @command(
     command="change_description",
     description="Change a goal's description",
-    categories="main_menu",
+    categories="goal_menu",
 )
 def change_description():
     goals = central_registry.central_registry["goals"]
@@ -123,7 +123,7 @@ def change_description():
 @command(
         command="change_target_duration",
         description="Change a goal's target duration.",
-        categories="main_menu",
+        categories="goal_menu",
 )
 def change_target_duration():
     goals = central_registry.central_registry["goals"]

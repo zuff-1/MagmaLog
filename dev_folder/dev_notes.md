@@ -3,7 +3,8 @@
 - Timelog by CodeGamma Technologies (on playstore/web)
 
 # todo list
+- chop chop the menu
+- add readme
 - feature to delete profile/file
 - feature to rename file
-- chop chop the menu
-- print progresses
+- print progresses n stuff
